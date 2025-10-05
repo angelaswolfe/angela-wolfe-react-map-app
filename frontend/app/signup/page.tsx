@@ -37,6 +37,8 @@ export default function SignUpPage() {
         setPassword('');
       }
     } catch (err) {
+      // use the caught error to avoid "defined but never used"
+      console.error('signup network error:', err);
       setStatus('Network error');
     } finally {
       setLoading(false);

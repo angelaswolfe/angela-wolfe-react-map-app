@@ -13,8 +13,10 @@ async function readUsers(): Promise<UserRecord[]> {
   try {
     const txt = await fs.readFile(dataFile, 'utf8');
     return JSON.parse(txt) as UserRecord[];
-  } catch (err: any) {
-    if (err.code === 'ENOENT') return [];
+  } catch (e: unknown) {
+    const err = e as NodeJS.ErrnoException;
+    if (err?.code === 'ENOENT') return [];
+    // re-throw other errors
     throw err;
   }
 }
@@ -49,7 +51,13 @@ export async function POST(req: Request) {
     await writeUsers(users);
 
     return NextResponse.json({ ok: true }, { status: 201 });
-  } catch (err) {
+  } catch (e: unknown) {
+    // log the error (use the variable so eslint doesn't mark it as unused)
+    if (e instanceof Error) {
+      console.error('signup POST error:', e.message);
+    } else {
+      console.error('signup POST error:', e);
+    }
     return NextResponse.json({ error: 'internal error' }, { status: 500 });
   }
 }

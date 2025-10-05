@@ -37,6 +37,8 @@ export default function SignInPage() {
         setPassword('');
       }
     } catch (err) {
+      // use the caught error to avoid "defined but never used"
+      console.error('signin network error:', err);
       setStatus('Network error');
     } finally {
       setLoading(false);
