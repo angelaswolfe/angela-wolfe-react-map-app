@@ -693,6 +693,16 @@ export default function Home() {
           </Fade>
         </Box>
         
+        {/* Action Buttons */}
+        <div style={{ marginTop: 16, display: 'flex', gap: 8 }}>
+          <a href="/signup" style={{ padding: '8px 12px', background: '#0ea5a4', color: '#fff', borderRadius: 6, textDecoration: 'none' }}>
+            Sign up
+          </a>
+          <a href="/signin" style={{ padding: '8px 12px', background: '#2563eb', color: '#fff', borderRadius: 6, textDecoration: 'none' }}>
+            Sign in
+          </a>
+        </div>
+        
         {/* Notification Snackbar */}
         <Snackbar
           open={notification.open}
