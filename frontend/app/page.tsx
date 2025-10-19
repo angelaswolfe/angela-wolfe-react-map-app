@@ -278,452 +278,487 @@ export default function Home() {
   };
 
   return (
-    <Box 
-      sx={{ 
-        minHeight: '100vh',
-        background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.02)} 0%, ${alpha(theme.palette.secondary.main, 0.02)} 100%)`,
-        py: 4
-      }}
-    >
-      <Container maxWidth="xl">
-        {/* Header Section */}
-        <Fade in={true} timeout={800}>
-          <Box sx={{ mb: 6, textAlign: 'center' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-              <TravelExploreIcon 
+    <>
+      {/* auth buttons moved to top-right */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 16,
+          right: 16,
+          display: 'flex',
+          gap: 8,
+          alignItems: 'center',
+          zIndex: 1000,
+        }}
+        aria-hidden={false}
+      >
+        <button
+          type="button"
+          onClick={() => setNotification({ open: true, message: 'Log in functionality', severity: 'success' })}
+          style={{
+            padding: '8px 12px',
+            background: '#0ea5a4',
+            color: '#fff',
+            borderRadius: 6,
+            border: 'none',
+            cursor: 'pointer'
+          }}
+        >
+          Sign up
+        </button>
+        <button
+          type="button"
+          onClick={() => setNotification({ open: true, message: 'Log in functionality', severity: 'success' })}
+          style={{
+            padding: '8px 12px',
+            background: '#2563eb',
+            color: '#fff',
+            borderRadius: 6,
+            border: 'none',
+            cursor: 'pointer'
+          }}
+        >
+          Sign in
+        </button>
+      </div>
+
+      <Box 
+        sx={{ 
+          minHeight: '100vh',
+          background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.02)} 0%, ${alpha(theme.palette.secondary.main, 0.02)} 100%)`,
+          py: 4
+        }}
+      >
+        <Container maxWidth="xl">
+          {/* Header Section */}
+          <Fade in={true} timeout={800}>
+            <Box sx={{ mb: 6, textAlign: 'center' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
+                <TravelExploreIcon 
+                  sx={{ 
+                    fontSize: 48, 
+                    color: 'primary.main', 
+                    mr: 2,
+                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
+                  }} 
+                />
+                <Typography 
+                  variant="h2" 
+                  component="h1" 
+                  sx={{ 
+                    fontWeight: 700,
+                    background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                    backgroundClip: 'text',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    letterSpacing: '-0.5px'
+                  }}
+                >
+                  TravelSpots
+                </Typography>
+              </Box>
+            </Box>
+          </Fade>
+          
+          <Box sx={{ display: 'flex', gap: 4, flexDirection: { xs: 'column', lg: 'row' } }}>
+            {/* Sidebar */}
+            <Fade in={true} timeout={1000}>
+              <Card 
+                elevation={0}
                 sx={{ 
-                  fontSize: 48, 
-                  color: 'primary.main', 
-                  mr: 2,
-                  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
-                }} 
-              />
-              <Typography 
-                variant="h2" 
-                component="h1" 
-                sx={{ 
-                  fontWeight: 700,
-                  background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  letterSpacing: '-0.5px'
+                  width: { xs: '100%', lg: 380 },
+                  borderRadius: 3,
+                  border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                  background: alpha(theme.palette.background.paper, 0.8),
+                  backdropFilter: 'blur(10px)',
+                  height: 'fit-content'
                 }}
               >
-                TravelSpots
-              </Typography>
-            </Box>
-          </Box>
-        </Fade>
-        
-        <Box sx={{ display: 'flex', gap: 4, flexDirection: { xs: 'column', lg: 'row' } }}>
-          {/* Sidebar */}
-          <Fade in={true} timeout={1000}>
-            <Card 
-              elevation={0}
-              sx={{ 
-                width: { xs: '100%', lg: 380 },
-                borderRadius: 3,
-                border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-                background: alpha(theme.palette.background.paper, 0.8),
-                backdropFilter: 'blur(10px)',
-                height: 'fit-content'
-              }}
-            >
-              <CardContent sx={{ p: 3 }}>
-                {/* Search Section */}
-                <Box sx={{ mb: 3 }}>
-                  <Typography 
-                    variant="h6" 
-                    sx={{ 
-                      mb: 2, 
-                      fontWeight: 600,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1
-                    }}
-                  >
-                    <ExploreIcon color="primary" />
-                    Explore Locations
-                  </Typography>
-                  
-                  <Autocomplete
-                    freeSolo
-                    options={suggestions}
-                    getOptionLabel={(option) => typeof option === 'string' ? option : option.description}
-                    loading={loading}
-                    onChange={handlePlaceSelect}
-                    onInputChange={(event, newInputValue) => {
-                      setSearchInput(newInputValue);
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        fullWidth
-                        placeholder="Search for any location..."
-                        variant="outlined"
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: 2,
-                            backgroundColor: alpha(theme.palette.background.default, 0.5),
-                            '&:hover': {
-                              backgroundColor: alpha(theme.palette.background.default, 0.8),
-                            },
-                            '&.Mui-focused': {
-                              backgroundColor: theme.palette.background.default,
-                            }
-                          }
-                        }}
-                        InputProps={{
-                          ...params.InputProps,
-                          startAdornment: (
-                            <>
-                              <InputAdornment position="start">
-                                <SearchIcon color="action" />
-                              </InputAdornment>
-                              {params.InputProps.startAdornment}
-                            </>
-                          ),
-                          endAdornment: (
-                            <>
-                              {loading ? <CircularProgress color="primary" size={20} /> : null}
-                              {params.InputProps.endAdornment}
-                            </>
-                          ),
-                        }}
-                      />
-                    )}
-                    renderOption={(props, option) => {
-                      const { key, ...otherProps } = props;
-                      return (
-                        <ListItem 
-                          key={key} 
-                          {...otherProps} 
-                          dense
-                          sx={{
-                            borderRadius: 1,
-                            '&:hover': {
-                              backgroundColor: alpha(theme.palette.primary.main, 0.05)
-                            }
-                          }}
-                        >
-                          <LocationOnIcon fontSize="small" color="primary" sx={{ mr: 1.5 }} />
-                          <Typography variant="body2" sx={{ fontSize: '0.9rem' }}>
-                            {option.description}
-                          </Typography>
-                        </ListItem>
-                      );
-                    }}
-                  />
-                </Box>
-
-                <Divider sx={{ my: 3, opacity: 0.3 }} />
-
-                {/* Saved Locations Section */}
-                <Box>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <CardContent sx={{ p: 3 }}>
+                  {/* Search Section */}
+                  <Box sx={{ mb: 3 }}>
                     <Typography 
                       variant="h6" 
                       sx={{ 
+                        mb: 2, 
                         fontWeight: 600,
                         display: 'flex',
                         alignItems: 'center',
                         gap: 1
                       }}
                     >
-                      <PlaceIcon color="primary" />
-                      Saved Places
+                      <ExploreIcon color="primary" />
+                      Explore Locations
                     </Typography>
-                    <Button 
-                      startIcon={<MyLocationIcon />}
-                      size="small"
-                      variant="outlined"
-                      onClick={findMyLocation}
-                      sx={{ 
-                        borderRadius: 2,
-                        textTransform: 'none',
-                        fontWeight: 500
+                    
+                    <Autocomplete
+                      freeSolo
+                      options={suggestions}
+                      getOptionLabel={(option) => typeof option === 'string' ? option : option.description}
+                      loading={loading}
+                      onChange={handlePlaceSelect}
+                      onInputChange={(event, newInputValue) => {
+                        setSearchInput(newInputValue);
                       }}
-                    >
-                      Find Me
-                    </Button>
-                  </Box>
-                  
-                  <TextField
-                    fullWidth
-                    placeholder="Filter your locations..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    size="small"
-                    sx={{
-                      mb: 2,
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: 2,
-                        backgroundColor: alpha(theme.palette.background.default, 0.5),
-                      }
-                    }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon fontSize="small" color="action" />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                    <Typography variant="body2" color="text.secondary">
-                      {filteredLocations.length} location{filteredLocations.length !== 1 ? 's' : ''}
-                    </Typography>
-                    <Chip 
-                      icon={<FavoriteIcon fontSize="small" />} 
-                      label={`${locations.filter(l => l.favorite).length} favorites`}
-                      size="small"
-                      color="primary"
-                      variant="outlined"
-                      sx={{ borderRadius: 2 }}
-                    />
-                  </Box>
-                  
-                  <List sx={{ maxHeight: 400, overflow: 'auto', px: 0 }}>
-                    {filteredLocations.map((location, index) => (
-                      <Fade in={true} timeout={300 + index * 100} key={location.id}>
-                        <Paper
-                          elevation={selectedLocation === location.id ? 2 : 0}
-                          sx={{ 
-                            mb: 1,
-                            borderRadius: 2,
-                            border: selectedLocation === location.id 
-                              ? `2px solid ${theme.palette.primary.main}`
-                              : `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-                            backgroundColor: selectedLocation === location.id 
-                              ? alpha(theme.palette.primary.main, 0.05)
-                              : 'transparent',
-                            transition: 'all 0.2s ease-in-out',
-                            '&:hover': { 
-                              transform: 'translateY(-1px)',
-                              boxShadow: theme.shadows[2],
-                              backgroundColor: selectedLocation === location.id 
-                                ? alpha(theme.palette.primary.main, 0.08)
-                                : alpha(theme.palette.action.hover, 0.5)
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          fullWidth
+                          placeholder="Search for any location..."
+                          variant="outlined"
+                          sx={{
+                            '& .MuiOutlinedInput-root': {
+                              borderRadius: 2,
+                              backgroundColor: alpha(theme.palette.background.default, 0.5),
+                              '&:hover': {
+                                backgroundColor: alpha(theme.palette.background.default, 0.8),
+                              },
+                              '&.Mui-focused': {
+                                backgroundColor: theme.palette.background.default,
+                              }
                             }
                           }}
-                        >
+                          InputProps={{
+                            ...params.InputProps,
+                            startAdornment: (
+                              <>
+                                <InputAdornment position="start">
+                                  <SearchIcon color="action" />
+                                </InputAdornment>
+                                {params.InputProps.startAdornment}
+                              </>
+                            ),
+                            endAdornment: (
+                              <>
+                                {loading ? <CircularProgress color="primary" size={20} /> : null}
+                                {params.InputProps.endAdornment}
+                              </>
+                            ),
+                          }}
+                        />
+                      )}
+                      renderOption={(props, option) => {
+                        const { key, ...otherProps } = props;
+                        return (
                           <ListItem 
-                            disablePadding
-                            secondaryAction={
-                              <IconButton 
-                                edge="end" 
-                                aria-label="favorite"
-                                onClick={() => toggleFavorite(location.id)}
-                                sx={{
-                                  transition: 'transform 0.2s ease-in-out',
-                                  '&:hover': {
-                                    transform: 'scale(1.1)'
-                                  }
-                                }}
-                              >
-                                {location.favorite ? 
-                                  <FavoriteIcon sx={{ color: '#e91e63' }} /> : 
-                                  <FavoriteBorderIcon color="action" />}
-                              </IconButton>
-                            }
+                            key={key} 
+                            {...otherProps} 
+                            dense
+                            sx={{
+                              borderRadius: 1,
+                              '&:hover': {
+                                backgroundColor: alpha(theme.palette.primary.main, 0.05)
+                              }
+                            }}
                           >
-                            <Box 
-                              sx={{ 
-                                p: 2, 
-                                width: '100%', 
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 1.5
-                              }}
-                              onClick={() => handleLocationSelect(location)}
-                            >
-                              <LocationOnIcon 
-                                color={selectedLocation === location.id ? 'primary' : 'action'} 
-                                fontSize="small" 
-                              />
-                              <Box sx={{ flexGrow: 1 }}>
-                                <Typography 
-                                  variant="subtitle2" 
-                                  sx={{ 
-                                    fontWeight: 600,
-                                    color: selectedLocation === location.id ? 'primary.main' : 'text.primary'
-                                  }}
-                                >
-                                  {location.name}
-                                </Typography>
-                                <Typography 
-                                  variant="body2" 
-                                  color="text.secondary" 
-                                  sx={{ 
-                                    fontSize: '0.8rem',
-                                    opacity: 0.8
-                                  }}
-                                >
-                                  {location.address}
-                                </Typography>
-                              </Box>
-                            </Box>
+                            <LocationOnIcon fontSize="small" color="primary" sx={{ mr: 1.5 }} />
+                            <Typography variant="body2" sx={{ fontSize: '0.9rem' }}>
+                              {option.description}
+                            </Typography>
                           </ListItem>
-                        </Paper>
-                      </Fade>
-                    ))}
-                    {filteredLocations.length === 0 && (
-                      <Box sx={{ py: 4, textAlign: 'center' }}>
-                        <ExploreIcon sx={{ fontSize: 48, color: 'text.disabled', mb: 1 }} />
-                        <Typography variant="body2" color="text.secondary">
-                          No locations found
-                        </Typography>
-                        <Typography variant="caption" color="text.disabled">
-                          Try adjusting your search or add new places
-                        </Typography>
-                      </Box>
-                    )}
-                  </List>
-                </Box>
-              </CardContent>
-            </Card>
-          </Fade>
-          
-          {/* Map Section */}
-          <Fade in={true} timeout={1200}>
-            <Card 
-              elevation={0}
-              sx={{ 
-                flexGrow: 1,
-                borderRadius: 3,
-                border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-                background: alpha(theme.palette.background.paper, 0.8),
-                backdropFilter: 'blur(10px)',
-                overflow: 'hidden'
-              }}
-            >
-              <CardContent sx={{ p: 3 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                  <Typography 
-                    variant="h5" 
-                    component="h2" 
-                    sx={{ 
-                      fontWeight: 600,
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      gap: 1.5
-                    }}
-                  >
-                    <Box
+                        );
+                      }}
+                    />
+                  </Box>
+
+                  <Divider sx={{ my: 3, opacity: 0.3 }} />
+
+                  {/* Saved Locations Section */}
+                  <Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                      <Typography 
+                        variant="h6" 
+                        sx={{ 
+                          fontWeight: 600,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1
+                        }}
+                      >
+                        <PlaceIcon color="primary" />
+                        Saved Places
+                      </Typography>
+                      <Button 
+                        startIcon={<MyLocationIcon />}
+                        size="small"
+                        variant="outlined"
+                        onClick={findMyLocation}
+                        sx={{ 
+                          borderRadius: 2,
+                          textTransform: 'none',
+                          fontWeight: 500
+                        }}
+                      >
+                        Find Me
+                      </Button>
+                    </Box>
+                    
+                    <TextField
+                      fullWidth
+                      placeholder="Filter your locations..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      size="small"
                       sx={{
-                        p: 1,
-                        borderRadius: 2,
-                        backgroundColor: alpha(theme.palette.primary.main, 0.1),
-                        display: 'flex',
-                        alignItems: 'center'
+                        mb: 2,
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: 2,
+                          backgroundColor: alpha(theme.palette.background.default, 0.5),
+                        }
+                      }}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchIcon fontSize="small" color="action" />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                      <Typography variant="body2" color="text.secondary">
+                        {filteredLocations.length} location{filteredLocations.length !== 1 ? 's' : ''}
+                      </Typography>
+                      <Chip 
+                        icon={<FavoriteIcon fontSize="small" />} 
+                        label={`${locations.filter(l => l.favorite).length} favorites`}
+                        size="small"
+                        color="primary"
+                        variant="outlined"
+                        sx={{ borderRadius: 2 }}
+                      />
+                    </Box>
+                    
+                    <List sx={{ maxHeight: 400, overflow: 'auto', px: 0 }}>
+                      {filteredLocations.map((location, index) => (
+                        <Fade in={true} timeout={300 + index * 100} key={location.id}>
+                          <Paper
+                            elevation={selectedLocation === location.id ? 2 : 0}
+                            sx={{ 
+                              mb: 1,
+                              borderRadius: 2,
+                              border: selectedLocation === location.id 
+                                ? `2px solid ${theme.palette.primary.main}`
+                                : `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                              backgroundColor: selectedLocation === location.id 
+                                ? alpha(theme.palette.primary.main, 0.05)
+                                : 'transparent',
+                              transition: 'all 0.2s ease-in-out',
+                              '&:hover': { 
+                                transform: 'translateY(-1px)',
+                                boxShadow: theme.shadows[2],
+                                backgroundColor: selectedLocation === location.id 
+                                  ? alpha(theme.palette.primary.main, 0.08)
+                                  : alpha(theme.palette.action.hover, 0.5)
+                              }
+                            }}
+                          >
+                            <ListItem 
+                              disablePadding
+                              secondaryAction={
+                                <IconButton 
+                                  edge="end" 
+                                  aria-label="favorite"
+                                  onClick={() => toggleFavorite(location.id)}
+                                  sx={{
+                                    transition: 'transform 0.2s ease-in-out',
+                                    '&:hover': {
+                                      transform: 'scale(1.1)'
+                                    }
+                                  }}
+                                >
+                                  {location.favorite ? 
+                                    <FavoriteIcon sx={{ color: '#e91e63' }} /> : 
+                                    <FavoriteBorderIcon color="action" />}
+                                </IconButton>
+                              }
+                            >
+                              <Box 
+                                sx={{ 
+                                  p: 2, 
+                                  width: '100%', 
+                                  cursor: 'pointer',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: 1.5
+                                }}
+                                onClick={() => handleLocationSelect(location)}
+                              >
+                                <LocationOnIcon 
+                                  color={selectedLocation === location.id ? 'primary' : 'action'} 
+                                  fontSize="small" 
+                                />
+                                <Box sx={{ flexGrow: 1 }}>
+                                  <Typography 
+                                    variant="subtitle2" 
+                                    sx={{ 
+                                      fontWeight: 600,
+                                      color: selectedLocation === location.id ? 'primary.main' : 'text.primary'
+                                    }}
+                                  >
+                                    {location.name}
+                                  </Typography>
+                                  <Typography 
+                                    variant="body2" 
+                                    color="text.secondary" 
+                                    sx={{ 
+                                      fontSize: '0.8rem',
+                                      opacity: 0.8
+                                    }}
+                                  >
+                                    {location.address}
+                                  </Typography>
+                                </Box>
+                              </Box>
+                            </ListItem>
+                          </Paper>
+                        </Fade>
+                      ))}
+                      {filteredLocations.length === 0 && (
+                        <Box sx={{ py: 4, textAlign: 'center' }}>
+                          <ExploreIcon sx={{ fontSize: 48, color: 'text.disabled', mb: 1 }} />
+                          <Typography variant="body2" color="text.secondary">
+                            No locations found
+                          </Typography>
+                          <Typography variant="caption" color="text.disabled">
+                            Try adjusting your search or add new places
+                          </Typography>
+                        </Box>
+                      )}
+                    </List>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Fade>
+            
+            {/* Map Section */}
+            <Fade in={true} timeout={1200}>
+              <Card 
+                elevation={0}
+                sx={{ 
+                  flexGrow: 1,
+                  borderRadius: 3,
+                  border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                  background: alpha(theme.palette.background.paper, 0.8),
+                  backdropFilter: 'blur(10px)',
+                  overflow: 'hidden'
+                }}
+              >
+                <CardContent sx={{ p: 3 }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                    <Typography 
+                      variant="h5" 
+                      component="h2" 
+                      sx={{ 
+                        fontWeight: 600,
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: 1.5
                       }}
                     >
-                      <PlaceIcon color="primary" />
+                      <Box
+                        sx={{
+                          p: 1,
+                          borderRadius: 2,
+                          backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                          display: 'flex',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <PlaceIcon color="primary" />
+                      </Box>
+                      Interactive Map
+                    </Typography>
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      <Chip 
+                        icon={<LocationOnIcon fontSize="small" />} 
+                        label={`${locations.length} locations`}
+                        size="small"
+                        variant="outlined"
+                        sx={{ borderRadius: 2 }}
+                      />
+                      <Chip 
+                        icon={<FavoriteIcon fontSize="small" />} 
+                        label={`${locations.filter(l => l.favorite).length} favorites`}
+                        size="small"
+                        color="primary"
+                        variant="filled"
+                        sx={{ borderRadius: 2 }}
+                      />
                     </Box>
-                    Interactive Map
-                  </Typography>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
-                    <Chip 
-                      icon={<LocationOnIcon fontSize="small" />} 
-                      label={`${locations.length} locations`}
-                      size="small"
-                      variant="outlined"
-                      sx={{ borderRadius: 2 }}
-                    />
-                    <Chip 
-                      icon={<FavoriteIcon fontSize="small" />} 
-                      label={`${locations.filter(l => l.favorite).length} favorites`}
-                      size="small"
-                      color="primary"
-                      variant="filled"
-                      sx={{ borderRadius: 2 }}
-                    />
                   </Box>
-                </Box>
-                
-                <Paper
-                  elevation={1}
-                  sx={{ 
-                    height: 520, 
-                    width: '100%', 
-                    borderRadius: 2, 
-                    overflow: 'hidden',
-                    border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-                    position: 'relative'
-                  }}
-                >
-                  <LeafletMap 
-                    center={mapCenter} 
-                    zoom={mapZoom} 
-                    markers={locations}
-                    selectedId={selectedLocation}
-                    onDoubleClick={handleMapDoubleClick}
-                    onAddLocation={handleAddLocation}
-                    onCenterMap={handleCenterMap}
-                    onZoomIn={handleZoomIn}
-                  />
-                </Paper>
-                
-                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.7 }}>
-                    💡 Double-click to zoom in • Right-click for menu options
-                  </Typography>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
-                    <Chip 
-                      size="small" 
-                      label="Interactive" 
-                      color="success" 
-                      variant="outlined"
-                      sx={{ borderRadius: 2, fontSize: '0.7rem' }}
+                  
+                  <Paper
+                    elevation={1}
+                    sx={{ 
+                      height: 520, 
+                      width: '100%', 
+                      borderRadius: 2, 
+                      overflow: 'hidden',
+                      border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                      position: 'relative'
+                    }}
+                  >
+                    <LeafletMap 
+                      center={mapCenter} 
+                      zoom={mapZoom} 
+                      markers={locations}
+                      selectedId={selectedLocation}
+                      onDoubleClick={handleMapDoubleClick}
+                      onAddLocation={handleAddLocation}
+                      onCenterMap={handleCenterMap}
+                      onZoomIn={handleZoomIn}
                     />
-                    <Chip 
-                      size="small" 
-                      label="Real-time" 
-                      color="info" 
-                      variant="outlined"
-                      sx={{ borderRadius: 2, fontSize: '0.7rem' }}
-                    />
+                  </Paper>
+                  
+                  <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.7 }}>
+                      💡 Double-click to zoom in • Right-click for menu options
+                    </Typography>
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      <Chip 
+                        size="small" 
+                        label="Interactive" 
+                        color="success" 
+                        variant="outlined"
+                        sx={{ borderRadius: 2, fontSize: '0.7rem' }}
+                      />
+                      <Chip 
+                        size="small" 
+                        label="Real-time" 
+                        color="info" 
+                        variant="outlined"
+                        sx={{ borderRadius: 2, fontSize: '0.7rem' }}
+                      />
+                    </Box>
                   </Box>
-                </Box>
-              </CardContent>
-            </Card>
-          </Fade>
-        </Box>
-        
-        {/* Action Buttons */}
-        <div style={{ marginTop: 16, display: 'flex', gap: 8 }}>
-          <a href="/signup" style={{ padding: '8px 12px', background: '#0ea5a4', color: '#fff', borderRadius: 6, textDecoration: 'none' }}>
-            Sign up
-          </a>
-          <a href="/signin" style={{ padding: '8px 12px', background: '#2563eb', color: '#fff', borderRadius: 6, textDecoration: 'none' }}>
-            Sign in
-          </a>
-        </div>
-        
-        {/* Notification Snackbar */}
-        <Snackbar
-          open={notification.open}
-          autoHideDuration={4000}
-          onClose={() => setNotification({ ...notification, open: false })}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        >
-          <Alert 
-            onClose={() => setNotification({ ...notification, open: false })} 
-            severity={notification.severity}
-            variant="filled"
-            sx={{ 
-              width: '100%',
-              borderRadius: 2,
-              fontWeight: 500
-            }}
+                </CardContent>
+              </Card>
+            </Fade>
+          </Box>
+          
+          {/* Notification Snackbar */}
+          <Snackbar
+            open={notification.open}
+            autoHideDuration={4000}
+            onClose={() => setNotification({ ...notification, open: false })}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           >
-            {notification.message}
-          </Alert>
-        </Snackbar>
-      </Container>
-    </Box>
+            <Alert 
+              onClose={() => setNotification({ ...notification, open: false })} 
+              severity={notification.severity}
+              variant="filled"
+              sx={{ 
+                width: '100%',
+                borderRadius: 2,
+                fontWeight: 500
+              }}
+            >
+              {notification.message}
+            </Alert>
+          </Snackbar>
+        </Container>
+      </Box>
+    </>
   );
 }
